@@ -13,10 +13,12 @@ renderFunctions f tweaks =
 
 xs = [from, from + step .. to]
   where
-    from = 0
+    from = -1
     to = 1
     step = (to - from) / 100
 
 f :: Double -> Double -> Double
-f 0 = \ x -> x
-f tweak = \ x -> - (((1 - tweak) ** x) - 1) / tweak
+f 0 x = x
+f tweak x | x > 0 = - (((1 - tweak) ** x) - 1) / tweak
+f tweak x | x < 0 = - f tweak (- x)
+f tweak 0 = 0
