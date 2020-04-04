@@ -1,19 +1,22 @@
+import Control.Monad
 import Graphics.Rendering.Chart.Easy
 import Graphics.Rendering.Chart.Backend.Diagrams
-import System.IO
 
 main :: IO ()
 main = do
-  hPutStr stderr "plotting..."
   toFile def "plot.svg" $ do
-    plot (line "f" [map (\ x -> (x, f x)) xs])
-  hPutStrLn stderr "done"
+    renderFunctions f [0, 0.3, 0.5, 0.7, 0.9, 0.99]
+
+renderFunctions f tweaks =
+  forM_ tweaks $ \ tweak ->
+    plot (line (show tweak) [map (\ x -> (x, f tweak x)) xs])
 
 xs = [from, from + step .. to]
   where
-    from = -7
-    to = 7
-    step = 0.1
+    from = 0
+    to = 1
+    step = (to - from) / 100
 
-f :: Double -> Double
-f = sin
+f :: Double -> Double -> Double
+f 0 = \ x -> x
+f tweak = \ x -> - (((1 - tweak) ** x) - 1) / tweak
