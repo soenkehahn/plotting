@@ -1,0 +1,10 @@
+name: plotting
+
+dependencies:
+  - base
+  - Chart
+  - Chart-diagrams
+
+executables:
+  plotting:
+    main: plotting.hs
